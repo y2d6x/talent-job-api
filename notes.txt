@@ -1,0 +1,129 @@
+Job_Web/
+├── 📄 package.json
+├── 📄 tsconfig.json
+├── �� pnpm-lock.yaml
+├── 📄 .env (you'll create this)
+├── �� .gitignore (you'll create this)
+├── 📄 README.md (you'll create this)
+│
+├── 📁 src/
+│   ├── 📁 config/
+│   │   ├── 📄 database.ts
+│   │   ├── 📄 auth.ts
+│   │   ├── �� app.ts
+│   │   └── �� index.ts
+│   │
+│   ├── 📁 models/
+│   │   ├── 📄 User.ts
+│   │   ├── �� Job.ts
+│   │   ├── �� Company.ts
+│   │   └── �� Application.ts
+│   │
+│   ├── �� controllers/
+│   │   ├── �� authController.ts
+│   │   ├── �� userController.ts
+│   │   ├── �� jobController.ts
+│   │   └── 📄 applicationController.ts
+│   │
+│   ├── 📁 routes/
+│   │   ├── 📄 auth.ts
+│   │   ├── �� users.ts
+│   │   ├── 📄 jobs.ts
+│   │   ├── 📄 applications.ts
+│   │   └── �� index.ts
+│   │
+│   ├── 📁 middleware/
+│   │   ├── 📄 auth.ts
+│   │   ├── 📄 validation.ts
+│   │   ├── 📄 errorHandler.ts
+│   │   └── �� rateLimiter.ts
+│   │
+│   ├── 📁 services/
+│   │   ├── �� authService.ts
+│   │   ├── 📄 jobService.ts
+│   │   ├── 📄 emailService.ts
+│   │   └── 📄 fileUploadService.ts
+│   │
+│   ├── �� utils/
+│   │   ├── 📄 validation.ts
+│   │   ├── �� helpers.ts
+│   │   ├── �� constants.ts
+│   │   └── 📄 logger.ts
+│   │
+│   ├── �� types/
+│   │   ├── 📄 user.types.ts
+│   │   ├── �� job.types.ts
+│   │   ├── �� api.types.ts
+│   │   └── �� database.types.ts
+│   │
+│   └── 📄 app.ts (main application file)
+│   └── 📄 server.ts (server entry point)
+│
+├── 📁 tests/
+│   ├── 📁 unit/
+│   │   ├── �� auth.test.ts
+│   │   ├── 📄 job.test.ts
+│   │   └── �� user.test.ts
+│   │
+│   ├── �� integration/
+│   │   ├── �� auth.test.ts
+│   │   ├── �� jobs.test.ts
+│   │   └── 📄 users.test.ts
+│   │
+│   └── 📁 e2e/
+│       └── 📄 api.test.ts
+│
+├── 📁 dist/ (compiled JavaScript files)
+└── �� uploads/ (for file uploads)
+
+
+
+
+
+What Each Folder Contains:
+src/config/ - Configuration files
+Database connection settings
+Authentication settings
+Environment variables
+App configuration
+src/models/ - Database models
+User model (job seekers, employers)
+Job model (job postings)
+Company model (employer companies)
+Application model (job applications)
+src/controllers/ - Request handlers
+Handle HTTP requests
+Call services for business logic
+Return responses
+src/routes/ - API endpoints
+Define API routes
+Connect routes to controllers
+Middleware application
+src/middleware/ - Express middleware
+Authentication checks
+Request validation
+Error handling
+Rate limiting
+src/services/ - Business logic
+Complex operations
+External API calls
+Data processing
+src/utils/ - Helper functions
+Common utilities
+Validation functions
+Constants
+src/types/ - TypeScript types
+Interface definitions
+Type declarations
+API response types
+tests/ - Testing files
+Unit tests for individual functions
+Integration tests for API endpoints
+End-to-end tests
+🚀 Key Files You'll Need:
+.env - Environment variables
+.gitignore - Git ignore rules
+README.md - Project documentation
+src/app.ts - Main application setup
+src/server.ts - Server entry point
+This structure follows best practices for a scalable Node.js/TypeScript backend API!
