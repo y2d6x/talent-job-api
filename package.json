@@ -8,7 +8,10 @@
     "dev": "nodemon --exec ts-node src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
-    "build:dev": "tsc --watch"
+    "build:dev": "tsc --watch",
+    "deploy": "pnpm build && vercel --prod",
+    "deploy:preview": "pnpm build && vercel",
+    "vercel-build": "pnpm build"
   },
   "keywords": [],
   "author": "",
