@@ -40,6 +40,31 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  console.log("🏠 Root endpoint requested");
+  res.status(200).json({
+    success: true,
+    message: 'Jobs API Server',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    environment: config.NODE_ENV,
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth'
+    }
+  });
+});
+
+// Favicon endpoints
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end(); // No content
+});
+
+app.get('/favicon.png', (req, res) => {
+  res.status(204).end(); // No content
+});
+
 // Import routes
 import authRoutes from './routes/auth';
 
