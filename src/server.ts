@@ -52,6 +52,24 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   startServer();
 }
 
+// For Vercel, connect to MongoDB when the app is first called
+let isConnected = false;
+const ensureDBConnection = async () => {
+  if (!isConnected) {
+    try {
+      await connectDB();
+      isConnected = true;
+      console.log('MongoDB connected for Vercel function');
+    } catch (error) {
+      console.error('Failed to connect to MongoDB:', error);
+      throw error;
+    }
+  }
+};
+
 // Export for Vercel - this is the function that Vercel will call
-export default app;
+export default async function handler(req: any, res: any) {
+  await ensureDBConnection();
+  return app(req, res);
+}
 
