@@ -152,9 +152,19 @@ export const register = async (req: Request, res: Response) => {
     });
 
     console.log("✅ Creating new user with data:", { email, userType, ...userData });
+    console.log("📊 User model:", UserModel.name);
+    console.log("📊 New user object:", newUser);
 
     await newUser.save();
     console.log("✅ User created successfully:", email);
+    console.log("📊 Saved user ID:", newUser._id);
+    console.log("📊 Saved user data:", {
+      id: newUser._id,
+      email: newUser.email,
+      role: newUser.role,
+      firstName: (newUser as any).firstName,
+      lastName: (newUser as any).lastName
+    });
 
     const token = generateToken((newUser._id as any).toString());
 

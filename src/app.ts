@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { config } from './config';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
 
 // Debug at app startup
 console.log("📱 App starting...");
@@ -63,6 +64,38 @@ app.get('/favicon.ico', (req, res) => {
 
 app.get('/favicon.png', (req, res) => {
   res.status(204).end(); // No content
+});
+
+// Database test endpoint
+app.get('/test-db', async (req, res) => {
+  try {
+    console.log("🔍 Testing database connection...");
+    console.log("📊 MongoDB connection state:", mongoose.connection.readyState);
+    
+    // Test basic database operations
+    if (!mongoose.connection.db) {
+      throw new Error("Database not connected");
+    }
+    
+    const testResult = await mongoose.connection.db.admin().ping();
+    console.log("✅ Database ping result:", testResult);
+    
+    res.status(200).json({
+      success: true,
+      message: 'Database connection test',
+      connectionState: mongoose.connection.readyState,
+      pingResult: testResult,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error: any) {
+    console.error("❌ Database test error:", error);
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed',
+      error: error.message,
+      connectionState: mongoose.connection.readyState
+    });
+  }
 });
 
 // Import routes

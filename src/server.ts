@@ -59,7 +59,13 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   console.log("🔄 Starting server for local development...");
   startServer();
 } else {
-  console.log("🌐 Vercel environment detected, skipping server start");
+  console.log("🌐 Vercel environment detected, connecting to database...");
+  // In Vercel, we still need to connect to the database
+  connectDB().then(() => {
+    console.log("✅ Database connected in Vercel environment");
+  }).catch((error) => {
+    console.error("❌ Failed to connect to database in Vercel:", error);
+  });
 }
 
 // Export for Vercel
