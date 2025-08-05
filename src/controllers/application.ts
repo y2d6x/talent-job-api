@@ -95,7 +95,7 @@ export const getApplicationsByEmployee = async (req: Request, res: Response) => 
         }
 
         const applications = await Application.find(query)
-            .populate('job', 'title company location salary type isActive')
+            .populate('job', 'title company location salary type status')
             .populate('employer', 'companyName')
             .sort({ appliedAt: -1 })
             .limit(Number(limit) * 1)
