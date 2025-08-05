@@ -8,29 +8,26 @@ Job_Web/
 │
 ├── 📁 src/
 │   ├── 📁 config/
-│   │   ├── 📄 database.ts
+│   │   |
 │   │   ├── 📄 auth.ts
 │   │   ├── �� app.ts
-│   │   └── �� index.ts
+│   │   └── �� mongodb.ts
 │   │
 │   ├── 📁 models/
-│   │   ├── 📄 User.ts
+│   │   ├── 📄 Employee.ts
 │   │   ├── �� Job.ts
-│   │   ├── �� Company.ts
+│   │   ├── �� employer.ts
 │   │   └── �� Application.ts
 │   │
 │   ├── �� controllers/
 │   │   ├── �� authController.ts
-│   │   ├── �� userController.ts
 │   │   ├── �� jobController.ts
 │   │   └── 📄 applicationController.ts
 │   │
 │   ├── 📁 routes/
 │   │   ├── 📄 auth.ts
-│   │   ├── �� users.ts
 │   │   ├── 📄 jobs.ts
 │   │   ├── 📄 applications.ts
-│   │   └── �� index.ts
 │   │
 │   ├── 📁 middleware/
 │   │   ├── 📄 auth.ts
@@ -38,17 +35,6 @@ Job_Web/
 │   │   ├── 📄 errorHandler.ts
 │   │   └── �� rateLimiter.ts
 │   │
-│   ├── 📁 services/
-│   │   ├── �� authService.ts
-│   │   ├── 📄 jobService.ts
-│   │   ├── 📄 emailService.ts
-│   │   └── 📄 fileUploadService.ts
-│   │
-│   ├── �� utils/
-│   │   ├── 📄 validation.ts
-│   │   ├── �� helpers.ts
-│   │   ├── �� constants.ts
-│   │   └── 📄 logger.ts
 │   │
 │   ├── �� types/
 │   │   ├── 📄 user.types.ts
@@ -58,23 +44,6 @@ Job_Web/
 │   │
 │   └── 📄 app.ts (main application file)
 │   └── 📄 server.ts (server entry point)
-│
-├── 📁 tests/
-│   ├── 📁 unit/
-│   │   ├── �� auth.test.ts
-│   │   ├── 📄 job.test.ts
-│   │   └── �� user.test.ts
-│   │
-│   ├── �� integration/
-│   │   ├── �� auth.test.ts
-│   │   ├── �� jobs.test.ts
-│   │   └── 📄 users.test.ts
-│   │
-│   └── 📁 e2e/
-│       └── 📄 api.test.ts
-│
-├── 📁 dist/ (compiled JavaScript files)
-└── �� uploads/ (for file uploads)
 
 
 

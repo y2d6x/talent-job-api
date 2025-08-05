@@ -131,7 +131,7 @@ export const isEmployer = (req: Request, res: Response, next: NextFunction) => {
  * Check if user is admin or employer
  */
 export const isAdminOrEmployer = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'employer')) {
+  if (!req.user || (req.user.role !== RoleType.Admin && req.user.role !== RoleType.Employer)) {
     res.status(403).json({
       success: false,
       message: 'Forbidden - Admin or Employer access required'

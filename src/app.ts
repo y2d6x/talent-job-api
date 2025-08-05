@@ -100,12 +100,14 @@ app.get('/test-db', async (req, res) => {
 
 // Import routes
 import authRoutes from './routes/auth';
+import jobRoutes from './routes/job';
+import applicationRoutes from './routes/application';
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
 // app.use('/api/users', userRoutes);
-// app.use('/api/jobs', jobRoutes);
-// app.use('/api/applications', applicationRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
