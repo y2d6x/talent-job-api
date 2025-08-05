@@ -11,7 +11,9 @@
     "build:dev": "tsc --watch",
     "deploy": "pnpm build && vercel --prod",
     "deploy:preview": "pnpm build && vercel",
-    "vercel-build": "pnpm build"
+    "vercel-build": "pnpm build",
+    "seed": "node scripts/seed-users.js",
+    "seed-vercel": "node scripts/seed-vercel.js"
   },
   "keywords": [],
   "author": "",
