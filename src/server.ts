@@ -50,3 +50,6 @@ process.on('SIGINT', () => {
 // Start the server
 startServer();
 
+// Export for Vercel
+export default app;
+
