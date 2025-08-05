@@ -3,6 +3,10 @@ import cors from 'cors';
 import { config } from './config';
 import cookieParser from 'cookie-parser';
 
+// Debug at app startup
+console.log("📱 App starting...");
+console.log("CORS Origin:", config.CORS_ORIGIN);
+
 // Create Express app
 const app: express.Application = express();
 
@@ -21,12 +25,13 @@ app.use(cookieParser()); // Middleware for parsing cookies
 
 // Request logging middleware
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  console.log(`📨 ${new Date().toISOString()} - ${req.method} ${req.path}`);
   next();
 });
 
 // Health check endpoint
 app.get('/health', (req, res) => {
+  console.log("🏥 Health check requested");
   res.status(200).json({
     status: 'OK',
     message: 'Jobs API is running',
@@ -46,6 +51,7 @@ app.use('/api/auth', authRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
+  console.log("❌ 404 - Route not found:", req.originalUrl);
   res.status(404).json({
     success: false,
     message: 'Route not found',
@@ -55,7 +61,7 @@ app.use('*', (req, res) => {
 
 // Global error handler
 app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error:', error);
+  console.error('❌ Error:', error);
   
   const statusCode = error.statusCode || 500;
   const message = error.message || 'Internal server error';
@@ -67,4 +73,5 @@ app.use((error: any, req: express.Request, res: express.Response, next: express.
   });
 });
 
+console.log("✅ App setup complete");
 export default app;

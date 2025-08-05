@@ -4,9 +4,16 @@ import { connectDB } from './config/mongodb';
 
 const PORT = config.PORT || 5000;
 
+// Debug at startup
+console.log("🚀 Server starting...");
+console.log("Environment:", process.env.NODE_ENV);
+console.log("Vercel:", process.env.VERCEL ? "YES" : "NO");
+
 // Start server function
 const startServer = async () => {
   try {
+    console.log("🔧 Starting server function...");
+    
     // Connect to MongoDB
     await connectDB();
     console.log('Database connected successfully');
@@ -49,9 +56,13 @@ process.on('SIGINT', () => {
 
 // Start the server only if not in Vercel environment
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  console.log("🔄 Starting server for local development...");
   startServer();
+} else {
+  console.log("🌐 Vercel environment detected, skipping server start");
 }
 
 // Export for Vercel
+console.log("📦 Exporting app for Vercel...");
 export default app;
 
