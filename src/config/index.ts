@@ -4,6 +4,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// Debug environment variables
+console.log("Environment Variables Debug:");
+console.log("MONGODB_URL:", process.env.MONGODB_URL ? "SET" : "NOT SET");
+console.log("JWT_SECRET:", process.env.JWT_SECRET ? "SET" : "NOT SET");
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("PORT:", process.env.PORT);
+
 // Environment variables
 export const config = {
   // Server configuration
