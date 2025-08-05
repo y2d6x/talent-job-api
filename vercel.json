@@ -12,9 +12,6 @@
       "dest": "dist/server.js"
     }
   ],
-  "env": {
-    "NODE_ENV": "production"
-  },
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install"
 } 
