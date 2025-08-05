@@ -15,11 +15,6 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "functions": {
-    "dist/server.js": {
-      "maxDuration": 30
-    }
-  },
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install"
 } 
