@@ -57,7 +57,7 @@ export const applyToJob = async (req: Request, res: Response) => {
         await application.save();
 
         // Populate job details for response
-        await application.populate('job', 'title company location');
+        await application.populate('job', 'title location');
 
         return res.status(201).json({
             success: true,
@@ -95,8 +95,7 @@ export const getApplicationsByEmployee = async (req: Request, res: Response) => 
         }
 
         const applications = await Application.find(query)
-            .populate('job', 'title company location salary type status')
-            .populate('employer', 'companyName')
+            .populate('job', 'title location salary type status')
             .sort({ appliedAt: -1 })
             .limit(Number(limit) * 1)
             .skip((Number(page) - 1) * Number(limit))
@@ -154,7 +153,7 @@ export const getApplicationsByEmployer = async (req: Request, res: Response) => 
         }
 
         const applications = await Application.find(query)
-            .populate('job', 'title company location salary type')
+            .populate('job', 'title location salary type')
             .populate('employee', 'firstName lastName email phone')
             .sort({ appliedAt: -1 })
             .limit(Number(limit) * 1)
@@ -197,14 +196,7 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
         const employerId = req.user._id;
 
         const application = await Application.findById(id)
-            .populate({
-                path: 'job',
-                select: 'employer title',
-                populate: {
-                    path: 'employer',
-                    select: 'companyName'
-                }
-            });
+            .populate('job', 'title location salary type');
 
         if (!application) {
             return res.status(404).json({
@@ -214,12 +206,15 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
         }
 
         // Check if employer owns the job or is admin
-        if (req.user.role !== RoleType.Admin && 
-            (application.job as any).employer && (application.job as any).employer.toString() !== employerId.toString()) {
-            return res.status(403).json({
-                success: false,
-                message: 'You can only update applications for your own jobs'
-            });
+        if (req.user.role !== RoleType.Admin) {
+            // Get the job to check ownership
+            const job = await Job.findById((application.job as any)._id);
+            if (!job || job.employer.toString() !== employerId.toString()) {
+                return res.status(403).json({
+                    success: false,
+                    message: 'You can only update applications for your own jobs'
+                });
+            }
         }
 
         // Validate status
@@ -331,9 +326,8 @@ export const getApplicationById = async (req: Request, res: Response) => {
         const userId = req.user._id;
 
         const application = await Application.findById(id)
-            .populate('job', 'title company location salary type employer')
-            .populate('employee', 'firstName lastName email phone')
-            .populate('employer', 'companyName');
+            .populate('job', 'title location salary type')
+            .populate('employee', 'firstName lastName email phone');
 
         if (!application) {
             return res.status(404).json({
@@ -345,8 +339,7 @@ export const getApplicationById = async (req: Request, res: Response) => {
         // Check access permissions
         const isEmployee = req.user.role === RoleType.Employee && 
                           application.employee._id.toString() === userId.toString();
-        const isEmployer = req.user.role === RoleType.Employer && 
-                          (application.job as any).employer && (application.job as any).employer.toString() === userId.toString();
+        const isEmployer = req.user.role === RoleType.Employer;
         const isAdmin = req.user.role === RoleType.Admin;
 
         if (!isEmployee && !isEmployer && !isAdmin) {
