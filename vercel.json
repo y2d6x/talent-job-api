@@ -6,9 +6,6 @@
   "routes": [
     { "src": "/(.*)", "dest": "/dist/server.js" }
   ],
-  "functions": {
-    "dist/server.js": { "runtime": "nodejs18.x" }
-  },
   "installCommand": "pnpm install",
   "buildCommand": "pnpm build"
 } 
