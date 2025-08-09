@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import type { CorsOptions } from 'cors';
+// CORS removed per user request
 
 export const securityHeaders = (req: Request, res: Response, next: NextFunction) => {
   // Security headers
@@ -15,70 +15,4 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
   next();
 };
 
-// Build allowed origins list from env (comma-separated) with sensible defaults
-// Defaults include local dev and regex to allow any Vercel preview domain
-const allowedOriginsFromEnv = (process.env.CORS_ORIGIN || 'http://localhost:3000')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
-
-// Optional: allow all *.vercel.app previews by default (can be disabled by setting explicit CORS_ORIGIN)
-const defaultVercelPreviewRegex = /\.vercel\.app$/i;
-
-export const corsOptions: CorsOptions = {
-  origin: (origin, callback) => {
-    // Allow non-browser clients with no Origin header
-    if (!origin) return callback(null, true);
-
-    // If any exact match
-    const exactAllowed = allowedOriginsFromEnv.includes(origin);
-    // If a regex string was provided in env, support it (e.g. "/\\.vercel\\.app$/i")
-    const regexAllowed = allowedOriginsFromEnv.some((entry) => {
-      if (entry.startsWith('/') && entry.endsWith('/i')) {
-        try {
-          const pattern = entry.slice(1, -2);
-          const re = new RegExp(pattern, 'i');
-          return re.test(origin);
-        } catch {
-          return false;
-        }
-      }
-      if (entry.startsWith('/') && entry.endsWith('/')) {
-        try {
-          const pattern = entry.slice(1, -1);
-          const re = new RegExp(pattern);
-          return re.test(origin);
-        } catch {
-          return false;
-        }
-      }
-      return false;
-    });
-
-    const vercelPreviewAllowed = defaultVercelPreviewRegex.test(origin);
-
-    if (exactAllowed || regexAllowed || vercelPreviewAllowed) {
-      return callback(null, true);
-    }
-    return callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-Requested-With',
-    'Accept',
-    'Origin',
-    'Referer',
-    'sec-ch-ua',
-    'sec-ch-ua-mobile',
-    'sec-ch-ua-platform',
-    'Sec-Fetch-Site',
-    'Sec-Fetch-Mode',
-    'Sec-Fetch-Dest',
-    'User-Agent'
-  ],
-  optionsSuccessStatus: 204,
-  preflightContinue: false,
-};
+// All CORS-related logic removed per request
