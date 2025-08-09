@@ -10,6 +10,7 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
   next();
 };
 
+
 // CORS: allow specific origins via CORS_ORIGIN (.env / Vercel). Supports credentials.
 export const corsOptions = {
   origin: (origin: string | undefined, cb: (err: Error | null, allow?: boolean) => void) => {

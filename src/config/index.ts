@@ -24,10 +24,7 @@ export const config = {
   JWT_SECRET: process.env.JWT_SECRET || 'your-super-secret-jwt-key',
   JWT_EXP_IN: process.env.JWT_EXP_IN || '1d',
   JWT_REFRESH_EXP_IN: process.env.JWT_REFRESH_EXP_IN || '7d',
-  
-  // CORS configuration
-  CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:3000',
-  
+  // CORS configuration removed
   // Environment-specific settings
   isDevelopment: process.env.NODE_ENV === 'development',
   isProduction: process.env.NODE_ENV === 'production',
