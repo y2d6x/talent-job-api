@@ -16,7 +16,8 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
 };
 
 // Build allowed origins list from env (comma-separated) with sensible defaults
-const allowedOriginsFromEnv = (process.env.CORS_ORIGIN || 'http://localhost:3000,https://talent-ddkafcl6b-yousifs-projects-6b79b898.vercel.app')
+// Defaults include local dev and regex to allow any Vercel preview domain
+const allowedOriginsFromEnv = (process.env.CORS_ORIGIN || 'http://localhost:3000')
   .split(',')
   .map((o) => o.trim())
   .filter(Boolean);
