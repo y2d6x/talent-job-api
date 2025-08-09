@@ -83,7 +83,7 @@ export const validateStatusUpdate = (req: Request, res: Response, next: NextFunc
     if (!status || !validStatuses.includes(status)) {
         return res.status(400).json({
             success: false,
-            message: 'Invalid status. Must be one of: ' + validStatuses.join(', ')
+            message: `Invalid status. Must be one of: ${validStatuses.join(', ')}`
         });
     }
 

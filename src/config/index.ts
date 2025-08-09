@@ -27,6 +27,10 @@ export const config = {
   
   // CORS configuration
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  
+  // Environment-specific settings
+  isDevelopment: process.env.NODE_ENV === 'development',
+  isProduction: process.env.NODE_ENV === 'production',
 };
 
 // لا تقم بتصدير الدوال من هنا

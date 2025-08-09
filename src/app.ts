@@ -3,6 +3,9 @@ import cors from 'cors';
 import { config } from './config';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
+import { securityHeaders, corsOptions } from './middleware/security';
+import { apiRateLimit } from './middleware/rateLimit';
+import { errorHandler } from './utils/errorHandler';
 
 // Debug at app startup
 console.log("📱 App starting...");
@@ -11,15 +14,17 @@ console.log("CORS Origin:", config.CORS_ORIGIN);
 // Create Express app
 const app: express.Application = express();
 
-// CORS configuration
-const corsOptions = {
-  origin: config.CORS_ORIGIN || 'http://localhost:3000',
-  credentials: true,
-  optionsSuccessStatus: 200
-};
+// Security middleware
+app.use(securityHeaders);
+
+// CORS configuration (including preflight)
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+// Rate limiting
+app.use(apiRateLimit);
 
 // Middleware
-app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser()); // Middleware for parsing cookies
@@ -102,11 +107,21 @@ app.get('/test-db', async (req, res) => {
 import authRoutes from './routes/auth';
 import jobRoutes from './routes/job';
 import applicationRoutes from './routes/application';
+import userRoutes from './routes/user';
+import dashboardRoutes from './routes/dashboard';
+import searchRoutes from './routes/search';
+import notificationRoutes from './routes/notification';
+import settingsRoutes from './routes/settings';
 
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/search', searchRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/settings', settingsRoutes);
 // app.use('/api/users', userRoutes);
 
 // 404 handler
@@ -120,18 +135,7 @@ app.use('*', (req, res) => {
 });
 
 // Global error handler
-app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('❌ Error:', error);
-  
-  const statusCode = error.statusCode || 500;
-  const message = error.message || 'Internal server error';
-  
-  res.status(statusCode).json({
-    success: false,
-    message: config.NODE_ENV === 'development' ? message : 'Something went wrong',
-    ...(config.NODE_ENV === 'development' && { stack: error.stack })
-  });
-});
+app.use(errorHandler);
 
 console.log("✅ App setup complete");
 export default app;
