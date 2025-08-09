@@ -57,11 +57,12 @@ export const login = async (req: Request, res: Response) => {
 
     const token = generateToken((user as { _id: { toString(): string } })._id.toString());
 
-    // Set HTTP-only cookie
+    // Set HTTP-only cookie (front-end friendly cross-site)
+    const isProd = process.env.NODE_ENV === 'production';
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
@@ -152,30 +153,10 @@ export const register = async (req: Request, res: Response) => {
     });
 
     console.log("✅ Creating new user with data:", { email, userType, ...userData });
-    console.log("📊 User model:", UserModel.name);
-    console.log("📊 New user object:", newUser);
 
     await newUser.save();
-    console.log("✅ User created successfully:", email);
-    console.log("📊 Saved user ID:", newUser._id);
-    console.log("📊 Saved user data:", {
-      id: newUser._id,
-      email: newUser.email,
-      role: newUser.role,
-      firstName: (newUser as any).firstName,
-      lastName: (newUser as any).lastName
-    });
 
-    const token = generateToken((newUser._id as any).toString());
-
-    // Set HTTP-only cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
-
+    // Do NOT issue a token on registration; login is required to get a token
     return res.status(201).json({
       success: true,
       message: 'User registered successfully',
@@ -184,14 +165,11 @@ export const register = async (req: Request, res: Response) => {
           id: newUser._id,
           email: newUser.email,
           role: newUser.role,
-        },
-        token
+        }
       }
     });
   } catch (error: any) {
     console.error('❌ Registration error:', error);
-    console.error('❌ Error stack:', error.stack);
-    console.error('❌ Error message:', error.message);
     return res.status(500).json({ 
       success: false,
       message: 'Server error',
@@ -205,7 +183,12 @@ export const register = async (req: Request, res: Response) => {
  * POST /api/auth/logout
  */
 export const logout = (req: Request, res: Response) => {
-  res.clearCookie('token');
+  const isProd = process.env.NODE_ENV === 'production';
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+  });
   res.status(200).json({ 
     success: true,
     message: 'Logged out successfully' 

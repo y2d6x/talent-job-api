@@ -1,17 +1,14 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "dist/server.js",
-      "use": "@vercel/node"
-    }
+    { "src": "dist/server.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/dist/server.js"
-    }
+    { "src": "/(.*)", "dest": "/dist/server.js" }
   ],
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install"
+  "functions": {
+    "dist/server.js": { "runtime": "nodejs18.x" }
+  },
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm build"
 } 

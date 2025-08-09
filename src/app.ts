@@ -17,7 +17,7 @@ const app: express.Application = express();
 // Security middleware
 app.use(securityHeaders);
 
-// CORS configuration (including preflight)
+// CORS with credentials + preflight
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
@@ -63,28 +63,20 @@ app.get('/', (req, res) => {
 });
 
 // Favicon endpoints
-app.get('/favicon.ico', (req, res) => {
-  res.status(204).end(); // No content
-});
-
-app.get('/favicon.png', (req, res) => {
-  res.status(204).end(); // No content
-});
+app.get('/favicon.ico', (req, res) => { res.status(204).end(); });
+app.get('/favicon.png', (req, res) => { res.status(204).end(); });
 
 // Database test endpoint
 app.get('/test-db', async (req, res) => {
   try {
     console.log("🔍 Testing database connection...");
     console.log("📊 MongoDB connection state:", mongoose.connection.readyState);
-    
-    // Test basic database operations
-    if (!mongoose.connection.db) {
-      throw new Error("Database not connected");
-    }
-    
+
+    if (!mongoose.connection.db) throw new Error("Database not connected");
+
     const testResult = await mongoose.connection.db.admin().ping();
     console.log("✅ Database ping result:", testResult);
-    
+
     res.status(200).json({
       success: true,
       message: 'Database connection test',
@@ -122,16 +114,11 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/settings', settingsRoutes);
-// app.use('/api/users', userRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
   console.log("❌ 404 - Route not found:", req.originalUrl);
-  res.status(404).json({
-    success: false,
-    message: 'Route not found',
-    path: req.originalUrl
-  });
+  res.status(404).json({ success: false, message: 'Route not found', path: req.originalUrl });
 });
 
 // Global error handler
