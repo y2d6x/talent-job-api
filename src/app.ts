@@ -1,15 +1,14 @@
 import express from 'express';
-import cors from 'cors';
 import { config } from './config';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { securityHeaders, corsOptions } from './middleware/security';
 import { apiRateLimit } from './middleware/rateLimit';
 import { errorHandler } from './utils/errorHandler';
+import cors from 'cors';
 
 // Debug at app startup
 console.log("📱 App starting...");
-console.log("CORS Origin:", config.CORS_ORIGIN);
 
 // Create Express app
 const app: express.Application = express();
