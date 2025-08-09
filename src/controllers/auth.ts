@@ -93,9 +93,10 @@ export const login = async (req: Request, res: Response) => {
 
 /**
  * User Registration
+/**
  * POST /api/auth/register
  */
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response): Promise<Response | void> => {
   const { userType, email, password, ...userData } = req.body;
 
   console.log("📝 Registration attempt for:", { userType, email, ...userData });
